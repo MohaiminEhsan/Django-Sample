@@ -1,0 +1,616 @@
+{% extends "base.html" %}
+{% load static %}
+{% block page_content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohaimin Ehsan's Portfolio</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensures that the body takes up at least the full height of the viewport */
+        }
+    
+        header {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+    
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+    
+        header h2 {
+            font-size: 1.5rem;
+            font-weight: normal;
+            margin-top: 0;
+        }
+    
+        header a {
+            text-decoration: none;
+            color: #3498db;
+        }
+    
+        nav {
+            background-color: #2c3e50;
+            padding: 10px;
+            text-align: center;
+        }
+    
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+    
+        nav a:hover {
+            text-decoration: underline;
+        }
+        
+                /* Reset margin and padding for the navigation container */
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        /* Make sure all list items in the nav are displayed inline */
+        nav ul li {
+            display: inline-block;
+            margin: 0 15px;
+        }
+
+        /* Style for the links */
+        nav ul li a {
+            text-decoration: none;
+            font-size: 18px;
+            color: #333;
+            font-weight: bold;
+            padding: 10px;
+            transition: color 0.3s ease;
+        }
+
+        /* Hover effect */
+        nav ul li a:hover {
+            color: #007BFF;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1; /* Ensures the container takes up the available space between header and footer */
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+    
+        h3 {
+            color: #2c3e50;
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+    
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+    
+        table td, table th {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+    
+        table th {
+            background-color: #3498db;
+            color: white;
+        }
+    
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    
+        footer {
+            text-align: center;
+            background-color: #343a40;
+            color: white;
+            padding: 15px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    
+        .social-links img {
+            margin: 0 10px;
+            width: 40px;
+            transition: transform 0.3s ease;
+        }
+    
+        .social-links img:hover {
+            transform: scale(1.2);
+        }
+    
+        .skills img {
+            margin: 10px;
+            width: 50px;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+    
+        .skills img:hover {
+            transform: scale(1.2);
+        }
+    
+        .email-link {
+            color: #3498db;
+        }
+    
+        .email-link:hover {
+            text-decoration: underline;
+        }
+    
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+    
+            header h2 {
+                font-size: 1.2rem;
+            }
+    
+            nav a {
+                font-size: 1rem;
+                margin: 0 10px;
+            }
+    
+            .skills img {
+                width: 40px;
+            }
+
+            .timeline-helper-left, .timeline-helper-right {
+            width: 100%;
+            margin: 5px 0;  /* Space between left and right */
+            }
+        }
+
+        .timeline-helper {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            position: relative;
+            margin: 20px 0;
+            justify-content: space-between;  /* Aligns both left and right items */
+        }
+
+        .timeline-helper-left {
+            background: #f4f4f4;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            width: 68%;  /* Make this a little more than half */
+        }
+
+        .timeline-helper-right {
+            background: #c3e1ed; /* Green background for the right items */
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            width: 31%;  /* Make this a little less than half */
+            align-self: flex-end; /* Align right content to the end of the container */
+        }
+
+        .timeline-helper-left h4, .timeline-helper-right h4 {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .timeline-helper-left p, .timeline-helper-right p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        /* .timeline-helper-left::after, .timeline-helper-right::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -16px;
+            width: 16px;
+            height: 16px;
+            background-color: white;
+            border-radius: 50%;
+            border: 2px solid #c3e1ed;
+        } */
+
+        /* .timeline-helper-left::before, .timeline-helper-right::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -16px;
+            width: 16px;
+            height: 16px;
+            background-color: white;
+            border-radius: 50%;
+            border: 2px solid #f4f4f4;
+        } */
+
+        .timeline-helper-left:hover, .timeline-helper-right:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-helper-left:hover {
+            background-color: #92bae7; /* Slightly darker green when hovered */
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Mohaimin Ehsan</h1>
+        <h2>Software Infrastructure/Impelmentation Engnieer | QA Automation Engineer | DevOps Engineer </h2>
+    </header>
+
+    <nav>
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#education">Education</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+        <a href="#resume">Resume</a>
+    </nav>
+
+    <div class="container">
+        <section id="about">
+            <h3>About Me</h3>
+            <p>Always seeking challenges in software development where I can leverage my educational qualifications, experience, creativity, and hard work to make a meaningful contribution. My goal is to build a successful career as an IT professional and contribute to research in the field. I am a dedicated, loyal, and hardworking individual who is committed to achieving excellence in everything I do.</p>
+        </section>
+
+        <section id="experience">
+            <h3>Work Experience</h3>
+            <div class="timeline-helper">  
+                <div class="timeline-helper-left">
+                    <h4>Advisor II Technical Support, <a href="https://www.concentrix.com/">Concentrix</a></h4>
+                </div>
+                <div class="timeline-helper-right">
+                    <p>June 2023 - Present</p>
+                </div>
+            </div>  
+                <table>
+                    <tr>
+                        <th>Role</th>
+                        <th>Responsibilities</th>
+                    </tr>
+                    <tr>
+                        <td>Technical Support</td>
+                        <td><ul>
+                            <li>Experience in troubleshooting hardware, software & client products, fixing issues quickly to improve performance and user satisfaction. 
+                                This led to a 25% drop in complaints and a 20% increase in usage.</li>
+                            <li>Initiative to address unstructured technical issues, resulting in a 25% reduction in average resolution
+                                time, enhancing operational efficiency and elevating client satisfaction to new highs.</li>
+                        </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Client Support</td>
+                        <td>
+                            <ul>
+                                <li>Application of innovative and exceptional thinking to resolve an average of 20 client issues per day.
+                                    Maintained broad knowledge base of client products, enabling efficient issue-solving and robust
+                                    client support.</li>
+                                <li>Achievement of a high daily resolution rate (around 90%), ensuring client satisfaction (average 94%)
+                                    and contributing to the overall performance enhancement of the products.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Skills</td>
+                        <td>
+                            <ul style="display: flex; list-style: none; margin: 0; padding: 0;">
+                                <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">CRM</li>
+                                <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Jira</li>
+                                <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Computer Networking</li>
+                                <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Mac OSX Server</li>
+
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+
+            <div class="timeline-helper">  
+                <div class="timeline-helper-left">
+                    <h4>Graduate Research Assistant, <a href="https://brocku.ca/">Brock University</a></h4>
+                </div>
+                <div class="timeline-helper-right">
+                    <p>January 2021 - June 2023</p>
+                </div>
+            </div> 
+            <table>
+                <tr>
+                    <th>Role</th>
+                    <th>Responsibilities</th>
+                </tr>
+                <tr>
+                    <td>Teaching Assistant</td>
+                    <td>
+                        <ul>
+                            <li>Facilitated lab sessions and prepared study materials for multiple courses, contributing to a dynamic and engaging learning environment.</li>
+                            <li>Assessed and graded examinations for various courses, demonstrating attention to detail and a commitment to maintaining high academic standards.</li>
+                        </ul>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>Research Assistant</td>
+                    <td>
+                        <ul>
+                            <li>Engineering of advanced vehicular simulation algorithms utilizing machine learning for refined resource
+                                allocation; improved simulation response time by 35% and reduced overall system latency by
+                                20%.</li>
+                            <li>Orchestration of advanced vehicular simulations utilizing Omnetpp, Veins, and Sumo, demonstrating
+                                a 30% enhancement in traffic modeling accuracy and a 20% decrease in simulated accident rates.</li>
+                            <li>Development and implementation of automation scripts for data extraction, reducing manual effort
+                                and increasing analysis accuracy by 30%, while managing interactive lab sessions and preparing detailed
+                                study guides.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Skills</td>
+                    <td>
+                        <ul style="display: flex; list-style: none; margin: 0; padding: 0;">
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Veins</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Sumo</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">C/C++</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Python</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Linux</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Vehicular Netoworks</li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="timeline-helper">  
+                <div class="timeline-helper-left">
+                    <h4>Software Infrastructure Engineer, <a href="https://research.samsung.com/srbd">Samsung R&D Institute Bangladesh</a></h4>
+                </div>
+                <div class="timeline-helper-right">
+                    <p>February 2018 - October 2020</p>
+                </div>
+            </div>   
+            <table>
+                <tr>
+                    <th>Role</th>
+                    <th>Responsibilities</th>
+                </tr>
+                <tr>
+                    <td>Infrastructure</td>
+                    <td>
+                        <ul>
+                            <li>Expertise in managing diverse requirements of software development, testing, and deployment
+                                across multiple platforms.</li>
+                            <li>Contributed to a total of 17 projects, including Samsung Health, Samsung
+                                GearS, Samsung Dex, My Galaxy, and Samsung Heartwise, by collaborating with cross-functional
+                                teams to gather requirements and define project goals.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>CI/CD</td>
+                    <td>
+                        <ul>
+                            <li>Led the development of a CI pipeline for iOS, Android, Windows, and Tizen platforms, enhancing build
+                                efficiency by 40% through automation scripts in Python, Shell, Batch, and Groovy.</li>
+                            <li>Transformed the software development framework by addressing challenges in CI/CD, build processes,
+                                scripting, static analysis, release automation, testing, log analysis, and code review, resulting
+                                in a 25% increase in development speed and improved team collaboration.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        DevOps
+                    </td>
+                    <td>
+                        <ul>
+                            <li>Established efficient software development and deployment processes using TestFlight, Firebase,
+                                XCrun and AWS that contributed to overall project success.</li>
+                            <li>Reduced release time by approximately
+                                40% and build time by around 30% through innovative solutions, ensuring high-quality results and
+                                exceeding client expectations. Provided training and support to team members on new tools and processes,
+                                fostering a collaborative work environment.</li>
+                            <li>Deploying packages, Monitoring and Securing infrastructure, Automating procedures, Load balancing, Database, and Content backup and restore.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Test & Analysis</td>
+                    <td>
+                        <ul>
+                            <li>Conducted static analysis using tools such as Tailor, Clang, SwiftLint, SonarQube, Coverity Scan, OCLint, and Cpplint to uphold code quality and adherence to industry standards.</li>
+                            <li>Innovated a standalone system for software
+                                releases and pioneered an LTE Test Automation Framework using Docker, WordPress, Jenkins,
+                                and CodeIgniter</li>
+                            <li>Implemented Static Analysisbased
+                                Automated Code Review to streamline the review process.</li>
+                            <li>Automated UI testing through scripting and utilized automation tools like Appium, while also
+                                conducting rigorous Application and Functional Testing.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>R&D</td>
+                    <td>
+                        <ul>
+                            <li>Developing Quality Dashboards, Developing small tools and APIs for automating processes, and implementing POCs.</li>
+                            <li>Established an internal collaborative system, the SRBD R&D Hub Dashboard with Python, Docker and MySQL to
+                                efficiently address operational requests within the organization </li>
+                            <li>Innovated a standalone system for automating the software release process, ensuring rigorous validation and adherence to best practices.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Skills</td>
+                    <td>
+                        <ul style="display: flex; flex-wrap: wrap; list-style: none; margin: 0; padding: 0;">
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">CI/CD</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">iOS Development</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Android</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Docker</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Kubernetes</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Python</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Django</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Java</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Groovy</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Shell</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Batch</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Jenkins</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">QuickBuild</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">GithubCI</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">AWS</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">TestFlight</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Firebase</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Tizen</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">MacOS</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Static Analysis</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Dynamic Analysis</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Wordpress</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Codeigniter</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">MySQL</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Appium</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">pytest</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Json</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Agile</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Confluence</li>
+                            <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Git</li>
+                            <!-- <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">SVN</li> -->
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+
+        <div class="timeline-helper">  
+            <div class="timeline-helper-left">
+                <h4>Software QA Engineer Intern, <a href="https://nilavo.com/">Nilavo Technologies Limited</a></h4>
+            </div>
+            <div class="timeline-helper-right">
+                <p>January 2016 - November 2017</p>
+            </div>
+        </div>  
+        <table>
+            <tr>
+                <th>Role</th>
+                <th>Responsibilities</th>
+            </tr>
+            <tr>
+                <td>Test Automation</td>
+                <td><ul>
+                    <li>Innovation of a scalable web test automation solution, optimizing script development processes, and
+                        reducing overall testing time by 70%, enhancing product quality and reliability.</li>
+                    <li>Development of automated test scripts with Selenium WebDriver and Ruby on Rails, cutting manual
+                        testing efforts by 60% and accelerating release cycles by 25%.</li>
+                </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Quality Assurance</td>
+                <td>
+                    <ul>
+                        <li>Exhibition of versatility by contributing to test case generation and manual execution, enhancing test
+                            suite efficiency by 45% and decreasing testing cycle time by 30%, ensuring timely product releases.</li>
+                        <li>Enhancement of the efficiency, scalability, and overall quality of the testing process, covering both
+                            automated and manual testing aspects.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Skills</td>
+                <td>
+                    <ul style="display: flex; list-style: none; margin: 0; padding: 0;">
+                        <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Selenium WebDriver</li>
+                        <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Quality Assurance</li>
+                        <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Ruby on Rails</li>
+                        <li style="margin-right: 10px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 15px; background-color: #f4f4f4;">Python</li>
+
+                    </ul>
+                </td>
+            </tr>
+        </table>
+
+        </section>
+
+        <section id="education">
+            <h3>Education</h3>
+            <table>
+                <tr>
+                    <td><strong>M.Sc. in Computer Science</strong>, <a href="https://brocku.ca/">Brock University</a>, 2021-2023</td>
+                    <td><strong>B.Sc. in Computer Science & Engineering</strong>, <a href="https://www.iutoic-dhaka.edu/">IUT</a>, 2013-2017</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="skills">
+            <h3>Skills</h3>
+            <div class="skills">
+                <img src="static/assets/img/C.png?raw=true" alt="C"/>
+                <img src="static/assets/img/C++.png?raw=true" alt="C++"/>
+                <img src="static/assets/img/java.svg?raw=true" alt="Java"/>
+                <img src="static/assets/img/python.png?raw=true" alt="Python"/>
+                <img src="static/assets/img/Objc.png?raw=true" alt="Objective C"/>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h3>Contact</h3>
+            <p>Email me at: <a class="email-link" href="mailto:mohaiminehsan@outlook.com">mohaiminehsan@outlook.com</a></p>
+            <div class="social-links">
+                <a href="https://www.facebook.com/mohaiminehsan.anik/"><img src="static/assets/img/fblogo.png?raw=true" alt="Facebook"/></a>
+                <a href="https://www.linkedin.com/in/mohaimin-ehsan-02072412b"><img src="static/assets/img/ldlogo.PNG?raw=true" alt="LinkedIn"/></a>
+                <a href="https://github.com/MohaiminEhsan"><img src="static/assets/img/Github.png?raw=true" alt="Github"/></a>
+                <!-- <a href="static/assets/doc/Mohaimin_Ehsan_Resume_S.pdf" download>
+                    <img src="static/assets/img/Dlogo.PNG?raw=true" alt="CV"/></a>
+                </a> -->
+            </div>
+        </section>
+
+        <section id="resume">
+            <h2>Resume</h2>
+            <p>Click the link below to download my resume:</p>
+            <a href="static/assets/doc/Mohaimin_Ehsan_Resume_S.pdf" download>
+                <img src="static/assets/img/Dlogo.PNG?raw=true" alt="CV"/></a>
+            </a>
+        </section>
+    </div>
+
+
+    <footer>
+        <p>© 2024 Mohaimin Ehsan. All Rights Reserved.</p>
+    </footer>
+
+    
+</body>
+</html>
+{% endblock page_content %}
